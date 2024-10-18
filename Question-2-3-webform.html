@@ -117,7 +117,8 @@
             $referencedElement = $input;
           }
           // R.G. hint: fix next line ;)
-          $error = $('<a>' + message + '</a>');
+          // Added href="#" to make the link focusable
+          $error = $('<a href="#">' + message + '</a>');
           $error.click(function (e) {
             // If we rely on the link's href pointing to the input's ID, it doesn't trigger forms mode in screen readers
             $referencedElement.focus();
@@ -150,10 +151,17 @@
           validateInput('gender', 'Please tell us your gender!');
           validateInput('accept_agbs', 'You must accept our terms and conditions!');
 
-          if ($('.error').length === 0) {
-            return alert('All inputs are valid.');
+          if ($('fieldset.errors').length > 0) {
+            // If there are errors, move focus to the errors area for screen reader users
+            $('fieldset.errors').focus();
+          } else {
+            // If no errors, notify that all inputs are valid
+            alert('All inputs are valid.');
+            $('form').prepend('<div role="alert" aria-live="assertive" tabindex="-1">All inputs are valid</div>');
           }
         }
+
+        
       });
     }).call(void 0);</script>
 
